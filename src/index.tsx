@@ -8,7 +8,7 @@ import Auth from "screens/Auth";
 import Launcher from "screens/Launcher";
 import Updater from "screens/Updater";
 import Settings from "screens/Settings";
-
+import TecnilandScreen from "screens/TecnilandScreen";
 import LauncherUpdater from "screens/LauncherUpdater";
 import "index.css";
 import "fontawesome.css";
@@ -38,6 +38,7 @@ ReactDOM.render(
           <Route path="/launcher" element={<Launcher />} />
           <Route path="/updater" element={<Updater />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/tecniland" element={<TecnilandScreen />} />
         </Routes>
       </BrowserRouter>
     </div>
