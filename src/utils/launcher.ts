@@ -1,7 +1,9 @@
 /**
- * Utilities related to launching the local Minecraft instance.
+ * Funciones de utilidad relacionadas con el lanzamiento del juego
+ * Minecraft de forma local.
  */
 export function launchLocalGame() {
-  // Delegate the launch to the Electron main process
+  // Enviamos un mensaje al proceso principal de Electron para que ejecute
+  // el script configurado y así iniciar el juego.
   window.ipc.send('launch-local-game');
 }

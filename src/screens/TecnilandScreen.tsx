@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react'; // Aquí irá tu CSS personalizado
+import React, { useEffect, useState } from 'react';
+// Componente experimental para nuevas funcionalidades del launcher.
 
 const TecnilandScreen = () => {
   const [currentPage, setCurrentPage] = useState<'splash' | 'login' | 'main'>('splash');

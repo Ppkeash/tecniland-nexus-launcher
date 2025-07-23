@@ -7,8 +7,14 @@ import type * as ConfigManagerTypes from "./utils/configmanager";
 //Global module
 const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
 
+// Encargado de gestionar todo el flujo de autenticación (Microsoft y offline)
 const logger = new Logger("[AuthManager]");
 
+/**
+ * Inicializa todos los manejadores IPC relacionados con la autenticación de
+ * usuarios. Permite iniciar sesión mediante Microsoft o modo offline y
+ * gestionar la sesión automática.
+ */
 export function initAuth() {
   ipc.on("microsoft-login", (event, autoAuth: boolean) => {
     configManager.setAutoAuthEnabled(autoAuth);

@@ -10,6 +10,9 @@ import crypto from "crypto";
 import Logger from "./utils/logger";
 import ChildProcess from "child_process";
 
+// Módulo encargado de actualizar y lanzar el juego utilizando
+// minecraft-launcher-core y gestionando la descarga de dependencias.
+
 import type * as ConfigManagerTypes from "./utils/configmanager";
 //Global module
 const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
@@ -21,6 +24,10 @@ const javaLogger = new Logger("[JavaLogger]");
 
 let jre = "default";
 
+/**
+ * Registra el manejador IPC para iniciar la secuencia de descarga y
+ * posterior lanzamiento del juego.
+ */
 export function initGame() {
   ipc.on("play", () => play());
 }
