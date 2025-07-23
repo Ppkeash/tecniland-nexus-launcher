@@ -11,6 +11,9 @@ import Settings from "screens/Settings";
 import TecnilandScreen from "screens/TecnilandScreen";
 import LauncherUpdater from "screens/LauncherUpdater";
 import MainScreen from "screens/MainScreen";
+import Init from "screens/offline/Init";
+import OfflineLogin from "screens/offline/OfflineLogin";
+import OfflineLauncher from "screens/offline/OfflineLauncher";
 // Global application styles
 import "styles/index.css";
 // Font Awesome icons
@@ -36,8 +39,12 @@ ReactDOM.render(
       <Frame />
       <BrowserRouter>
         <Routes>
-          {/* Landing page of the launcher */}
-          <Route path="/" element={<MainScreen />} />
+          {/* Flujo de inicio offline */}
+          <Route path="/" element={<Init />} />
+          <Route path="/login" element={<OfflineLogin />} />
+          <Route path="/home" element={<OfflineLauncher />} />
+
+          {/* Rutas originales */}
           <Route path="/update" element={<LauncherUpdater />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/launcher" element={<Launcher />} />

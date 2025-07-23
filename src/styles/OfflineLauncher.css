@@ -1,0 +1,41 @@
+.offline-launcher-container {
+  height: 100vh;
+  background-image: url('../../public/assets/background.png');
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.version-selector {
+  margin: 20px 0;
+}
+
+.play-button {
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  background-color: #00c853;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.play-button:hover {
+  background-color: #03a64e;
+  transform: scale(1.05);
+}
+
+.news-box {
+  margin-top: 40px;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  width: 60%;
+}
