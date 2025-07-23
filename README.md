@@ -1,6 +1,6 @@
 <p align="center"><img src="./public/assets/logo.png" width="150px" height="150px" alt="logo"></p>
 
-<h1 align="center">React MCLauncher</h1>
+<h1 align="center">TECNILAND Nexus</h1>
 
 Custom launcher for modded minecraft written in Electron with React.
 
@@ -37,7 +37,7 @@ This section details the setup of a basic developmentment environment.
 
 **Start in Development**
 
-The launcher integrates React with Electron. Use the following command to run the application in development mode and automatically open the desktop window:
+The launcher integrates React with Electron. Use the following command to build the React frontend and launch the desktop window:
 
 ```console
 > npm start

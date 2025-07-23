@@ -13,7 +13,7 @@ autoUpdater.logger = log;
 import type * as ConfigManagerTypes from "./utils/configmanager";
 //Global module
 const configManager: typeof ConfigManagerTypes = require("./utils/configmanager");
-const LAUNCHER_NAME = "ReactMCLauncher";
+const LAUNCHER_NAME = "TECNILAND Nexus";
 
 let win: BrowserWindow | null = null;
 
@@ -28,11 +28,8 @@ function createWindow() {
     title: LAUNCHER_NAME,
     icon: path.join(__dirname, "..", "..", "public", "assets", "logo.png"),
   });
-  if (app.isPackaged) {
-    win.loadURL(`file://${__dirname}/../index.html`);
-  } else {
-    win.loadURL("http://localhost:3000");
-  }
+  const indexPath = `file://${path.join(__dirname, "../index.html")}`;
+  win.loadURL(indexPath);
 }
 
 app.whenReady().then(() => {
