@@ -1,17 +1,17 @@
 import React from 'react';
-// Main launcher entry screen
+// Pantalla principal de inicio del launcher
 import 'styles/MainScreen.css';
 import { launchLocalGame } from 'utils/launcher';
 
 /**
- * MainScreen renders the first view of the launcher. It contains the
- * application title, a short description and a play button. The play
- * button triggers the launch of the local Minecraft installation via
- * IPC to the Electron main process.
+ * Componente que muestra la vista inicial del launcher. Aquí se visualiza
+ * el título de la aplicación y un botón para ejecutar el modpack local.
+ * Al pulsar "JUGAR" se envía el evento correspondiente al proceso de
+ * Electron para que se ejecute el script configurado.
  */
 const MainScreen: React.FC = () => {
   const handlePlay = () => {
-    // Delegate to the launcher utility
+    // Delegamos la acción al helper encargado de comunicarse con Electron
     launchLocalGame();
   };
 

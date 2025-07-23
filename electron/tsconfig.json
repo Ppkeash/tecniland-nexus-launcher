@@ -1,21 +1,19 @@
 {
-    "compilerOptions": {
-      "target": "ES2015",
-      "module": "commonjs",
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "strict": true,
-      "strictNullChecks": true,
-      "outDir": "../build",
-      "rootDir": "../",
-      "noEmitOnError": true,
-      "esModuleInterop": true,
-      "typeRoots": [
-        "node_modules/@types"
-      ],
-      "declaration": true,
-      "skipLibCheck": true,
-
-    },
-    
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "outDir": "../build",
+    "rootDir": "../",
+    "noEmitOnError": true,
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "declaration": true,
+    "skipLibCheck": true
+  }
 }

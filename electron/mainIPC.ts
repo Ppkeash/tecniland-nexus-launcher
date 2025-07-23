@@ -15,15 +15,18 @@ const logger = new Logger("[Launcher]");
 function initMainIPC() {
   //Async utils
   ipc.on("open-link", (event, args) => shell.openExternal(args));
-  // Launch game through a custom batch file
+  // Ejecuta un script local para lanzar el juego. La ruta se obtiene de la
+  // variable de entorno LOCAL_GAME_SCRIPT para permitir configuraciones
+  // personalizadas en cada máquina.
   ipc.on("launch-local-game", () => {
+    const scriptPath = process.env.LOCAL_GAME_SCRIPT;
+    if (!scriptPath) {
+      logger.error("LOCAL_GAME_SCRIPT no está definida");
+      return;
+    }
     try {
       const { spawn } = require("child_process");
-      const bat = spawn(
-        "C:\\Users\\Keash\\Documents\\TECNILAND\\launch.bat",
-        [],
-        { shell: true }
-      );
+      const bat = spawn(scriptPath, [], { shell: true });
       bat.stdout.on("data", (data: Buffer) => console.log(data.toString()));
       bat.stderr.on("data", (data: Buffer) => console.error(data.toString()));
       bat.on("error", (err: Error) => console.error("Error launching:", err));

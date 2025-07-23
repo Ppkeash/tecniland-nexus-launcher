@@ -7,6 +7,7 @@ import { autoUpdater } from "electron-updater";
 import { initAuth } from "./auth";
 import { initGame } from "./game";
 import log from "electron-log";
+// Redirigimos todos los logs a electron-log para tener trazas persistentes.
 console.log = log.log;
 autoUpdater.logger = log;
 
@@ -17,6 +18,7 @@ const LAUNCHER_NAME = "TECNILAND Nexus";
 
 let win: BrowserWindow | null = null;
 
+// Crea la ventana principal del launcher y carga la aplicación React
 function createWindow() {
   win = new BrowserWindow({
     width: 1280,
@@ -60,6 +62,8 @@ app.whenReady().then(() => {
 ipc.on("install-updates", () => {
   autoUpdater.quitAndInstall();
 });
+// Comprueba si existen actualizaciones del launcher y gestiona el proceso
+// de descarga e instalación utilizando electron-updater.
 ipc.on("check-auto-update", () => {
   if (isDev) {
     autoUpdater.updateConfigPath = path.join(__dirname, "dev-app-update.yml");
