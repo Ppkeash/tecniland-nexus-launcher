@@ -87,7 +87,7 @@ function initMainIPC() {
     configManager.saveConfig();
   });
   ipc.on("get-java-path", (event) => {
-    event.returnValue = configManager.getJavaExecutable();
+    event.returnValue = configManager.resolveJavaPath() || "";
   });
   ipc.on("is-java-valid", (event) => {
     event.returnValue = isJavaAvailable();

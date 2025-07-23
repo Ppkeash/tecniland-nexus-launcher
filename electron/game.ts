@@ -23,14 +23,13 @@ const gameLogger = new Logger("[GameLogger]");
 const javaLogger = new Logger("[JavaLogger]");
 
 let jre = "default";
-let customJava: string | null = null;
 
 export function isJavaAvailable(): boolean {
-  const javaExec = configManager.getJavaExecutable() || "java";
+  const javaExec = configManager.resolveJavaPath();
+  if (!javaExec) return false;
   try {
     const res = ChildProcess.spawnSync(javaExec, ["-version"]);
     if (res.error) return false;
-    customJava = javaExec !== "java" ? javaExec : null;
     return res.stderr.toString().includes("version");
   } catch (e) {
     return false;
@@ -97,7 +96,7 @@ async function updateAndLaunch() {
               "bin",
               process.platform === "win32" ? "java.exe" : "java"
             )
-          : customJava || undefined;
+          : configManager.resolveJavaPath() || undefined;
       const launcher = new Client();
       const opts = {
         clientPackage: undefined,
@@ -210,7 +209,11 @@ function checkJavaInstallation() {
       });
     }
 
-    const execCmd = configManager.getJavaExecutable() || "java";
+    const execCmd = configManager.resolveJavaPath();
+    if (!execCmd) {
+      javaLogger.log("No java installation found!");
+      return reject();
+    }
     const spawn = ChildProcess.spawn(execCmd, ["-version"]);
     spawn.on("error", function () {
       javaLogger.log("No java installation found!");
@@ -224,7 +227,6 @@ function checkJavaInstallation() {
           : false;
         if (javaVersion != false) {
           javaLogger.log("Java " + javaVersion + " is already installed");
-          customJava = execCmd !== "java" ? execCmd : null;
           jre = "default";
           return resolve();
         } else {
