@@ -25,8 +25,8 @@ const javaLogger = new Logger("[JavaLogger]");
 let jre = "default";
 
 export function isJavaAvailable(): boolean {
-  const javaExec = configManager.resolveJavaPath();
-  if (!javaExec) return false;
+  const javaExec = configManager.getJavaExecutable();
+  if (!javaExec || !fs.existsSync(javaExec)) return false;
   try {
     const res = ChildProcess.spawnSync(javaExec, ["-version"]);
     if (res.error) return false;
@@ -96,7 +96,7 @@ async function updateAndLaunch() {
               "bin",
               process.platform === "win32" ? "java.exe" : "java"
             )
-          : configManager.resolveJavaPath() || undefined;
+          : configManager.getJavaExecutable() || undefined;
       const launcher = new Client();
       const opts = {
         clientPackage: undefined,
@@ -209,8 +209,8 @@ function checkJavaInstallation() {
       });
     }
 
-    const execCmd = configManager.resolveJavaPath();
-    if (!execCmd) {
+    const execCmd = configManager.getJavaExecutable();
+    if (!execCmd || !fs.existsSync(execCmd)) {
       javaLogger.log("No java installation found!");
       return reject();
     }
