@@ -75,6 +75,10 @@
     "auto-auth": "Auto authentication",
     "keep-launcher-open": "Keep the launcher open",
     "account": "Account",
-    "logout": "Logout"
+    "logout": "Logout",
+    "java-path": "Java path",
+    "select-java": "Select Java",
+    "java-path-not-set": "Not set",
+    "java-missing": "Java executable not found. Please select the path"
   }
 }

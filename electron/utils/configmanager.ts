@@ -34,6 +34,7 @@ type AuthType = "microsoft" | "offline";
 type Config = {
   settings: {
     java: {
+      path: string;
       minRAM: string;
       maxRAM: string;
     };
@@ -64,6 +65,7 @@ export type DynaConfig = {
 const DEFAULT_CONFIG: Config = {
   settings: {
     java: {
+      path: "",
       minRAM: resolveMinRAM(),
       maxRAM: resolveMaxRAM(),
     },
@@ -182,8 +184,12 @@ export function load() {
     }
   }
   if (doLoad) {
-    try {
-      config = JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }));
+      try {
+        config = JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }));
+        if (config && !config.settings.java.path) {
+          config.settings.java.path = "";
+          saveConfig();
+        }
     } catch (err) {
       logger.log("Configuration file contains malformed JSON or is corrupt.");
       logger.log("Generating a new configuration file.");
@@ -390,6 +396,16 @@ export function getMaxRAM(def: boolean = false) {
 export function setMaxRAM(maxRAM: string) {
   if (config) {
     config.settings.java.maxRAM = maxRAM;
+  }
+}
+
+export function getJavaExecutable(def: boolean = false) {
+  return !def ? config?.settings.java.path : "";
+}
+
+export function setJavaExecutable(javaPath: string) {
+  if (config) {
+    config.settings.java.path = javaPath;
   }
 }
 

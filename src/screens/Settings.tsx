@@ -21,6 +21,7 @@ type State = {
   keepLauncherOpen: boolean;
   playerUuid: string;
   playerName: string;
+  javaPath: string;
 };
 type Props = {
   navigate?: NavigateFunction;
@@ -87,6 +88,7 @@ class Settings extends Component<Props & WithTranslation, State> {
     keepLauncherOpen: false,
     playerUuid: "",
     playerName: "",
+    javaPath: "",
   };
 
   componentDidMount() {
@@ -97,7 +99,11 @@ class Settings extends Component<Props & WithTranslation, State> {
       keepLauncherOpen: window.ipc.sendSync("is-keep-launcher-open"),
       playerName: window.ipc.sendSync("get-player-name"),
       playerUuid: window.ipc.sendSync("get-player-uuid"),
+      javaPath: window.ipc.sendSync("get-java-path"),
     });
+    window.ipc.receive("java-path-selected", (path: string) =>
+      this.setState({ javaPath: path })
+    );
   }
 
   //Arrow fx for binding
@@ -115,6 +121,9 @@ class Settings extends Component<Props & WithTranslation, State> {
     window.ipc.send("set-keep-launcher-open", !keepLauncherOpen);
     this.setState({ keepLauncherOpen: !keepLauncherOpen });
   };
+  handleSelectJava = () => {
+    window.ipc.send("open-java-dialog");
+  };
   handleLogoutClick = () => {
     window.ipc.send("logout");
     // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
@@ -130,6 +139,7 @@ class Settings extends Component<Props & WithTranslation, State> {
       keepLauncherOpen,
       playerUuid,
       playerName,
+      javaPath,
     } = this.state;
     return (
       <div className="settings-content">
@@ -158,6 +168,8 @@ class Settings extends Component<Props & WithTranslation, State> {
             <Button onClick={() => window.ipc.send("open-game-dir")}>
               {t("settings.open-game-dir")}
             </Button>
+            <h4>{t("settings.java-path")}: {javaPath || t("settings.java-path-not-set")}</h4>
+            <Button onClick={this.handleSelectJava}>{t("settings.select-java")}</Button>
           </section>
           <section className="launcher">
             <h2>Launcher</h2>

@@ -23,6 +23,19 @@ const gameLogger = new Logger("[GameLogger]");
 const javaLogger = new Logger("[JavaLogger]");
 
 let jre = "default";
+let customJava: string | null = null;
+
+export function isJavaAvailable(): boolean {
+  const javaExec = configManager.getJavaExecutable() || "java";
+  try {
+    const res = ChildProcess.spawnSync(javaExec, ["-version"]);
+    if (res.error) return false;
+    customJava = javaExec !== "java" ? javaExec : null;
+    return res.stderr.toString().includes("version");
+  } catch (e) {
+    return false;
+  }
+}
 
 /**
  * Registra el manejador IPC para iniciar la secuencia de descarga y
@@ -70,24 +83,7 @@ function play() {
       updateAndLaunch();
     })
     .catch(() => {
-      const jrePath = path.join(configManager.getGameDirectory(), "jre");
-      if (!fs.existsSync(jrePath)) {
-        fs.mkdirSync(jrePath, { recursive: true });
-      }
-
-      if (process.platform === "win32") {
-        downloadJava(
-          configManager.JRE_WINDOWS,
-          path.join(jrePath, "jre-windows.zip"),
-          jrePath
-        );
-      } else {
-        downloadJava(
-          configManager.JRE_LINUX,
-          path.join(jrePath, "jre-linux.zip"),
-          jrePath
-        );
-      }
+      win?.webContents.send("java-not-found");
     });
 }
 async function updateAndLaunch() {
@@ -101,7 +97,7 @@ async function updateAndLaunch() {
               "bin",
               process.platform === "win32" ? "java.exe" : "java"
             )
-          : undefined;
+          : customJava || undefined;
       const launcher = new Client();
       const opts = {
         clientPackage: undefined,
@@ -214,7 +210,8 @@ function checkJavaInstallation() {
       });
     }
 
-    const spawn = ChildProcess.spawn("java", ["-version"]);
+    const execCmd = configManager.getJavaExecutable() || "java";
+    const spawn = ChildProcess.spawn(execCmd, ["-version"]);
     spawn.on("error", function () {
       javaLogger.log("No java installation found!");
       return reject();
@@ -227,6 +224,7 @@ function checkJavaInstallation() {
           : false;
         if (javaVersion != false) {
           javaLogger.log("Java " + javaVersion + " is already installed");
+          customJava = execCmd !== "java" ? execCmd : null;
           jre = "default";
           return resolve();
         } else {
