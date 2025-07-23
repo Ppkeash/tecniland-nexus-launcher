@@ -403,10 +403,12 @@ export function getJavaExecutable(def: boolean = false) {
   return !def ? config?.settings.java.path : "";
 }
 
-export function setJavaExecutable(javaPath: string) {
-  if (config) {
+export function setJavaExecutable(javaPath: string): boolean {
+  if (config && javaPath && fs.existsSync(javaPath)) {
     config.settings.java.path = javaPath;
+    return true;
   }
+  return false;
 }
 
 export function autoDetectJavaPath(): string | null {
@@ -449,14 +451,6 @@ export function resolveJavaPath(): string | null {
   if (configured && fs.existsSync(configured)) {
     return configured;
   }
-
-  const detected = autoDetectJavaPath();
-  if (detected && config) {
-    config.settings.java.path = detected;
-    saveConfig();
-    return detected;
-  }
-
   return null;
 }
 

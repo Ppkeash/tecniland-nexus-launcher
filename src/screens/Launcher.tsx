@@ -90,6 +90,18 @@ class Launcher extends Component<Props & WithTranslation, State> {
       return;
     }
 
+    const javaPath = window.ipc.sendSync("get-java-path");
+    if (!javaPath) {
+      Swal.fire({
+        title: t("error"),
+        text: t("settings.java-missing"),
+        icon: "error",
+        confirmButtonColor: "#54c2f0",
+        background: "#333",
+      });
+      return;
+    }
+
     const javaValid = window.ipc.sendSync("is-java-valid");
     if (!javaValid) {
       Swal.fire({

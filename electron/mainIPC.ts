@@ -76,18 +76,24 @@ function initMainIPC() {
         },
       ],
     });
-    if (!result.canceled && result.filePaths.length > 0) {
-      configManager.setJavaExecutable(result.filePaths[0]);
-      configManager.saveConfig();
-      event.sender.send("java-path-selected", result.filePaths[0]);
-    }
-  });
+      if (!result.canceled && result.filePaths.length > 0) {
+        if (configManager.setJavaExecutable(result.filePaths[0])) {
+          configManager.saveConfig();
+          event.sender.send("java-path-selected", result.filePaths[0]);
+        } else {
+          event.sender.send("java-path-invalid");
+        }
+      }
+    });
   ipc.on("set-java-path", (event, args) => {
-    configManager.setJavaExecutable(args);
-    configManager.saveConfig();
+    const res = configManager.setJavaExecutable(args);
+    if (res) {
+      configManager.saveConfig();
+    }
+    event.returnValue = res;
   });
   ipc.on("get-java-path", (event) => {
-    event.returnValue = configManager.resolveJavaPath() || "";
+    event.returnValue = configManager.getJavaExecutable() || "";
   });
   ipc.on("is-java-valid", (event) => {
     event.returnValue = isJavaAvailable();

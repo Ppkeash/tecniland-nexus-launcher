@@ -79,6 +79,6 @@
     "java-path": "Java path",
     "select-java": "Select Java",
     "java-path-not-set": "Not set",
-    "java-missing": "Java executable not found. Please select the path"
+    "java-missing": "Java path not configured. Go to settings to set it"
   }
 }

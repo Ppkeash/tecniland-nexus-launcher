@@ -168,7 +168,25 @@ class Settings extends Component<Props & WithTranslation, State> {
             <Button onClick={() => window.ipc.send("open-game-dir")}>
               {t("settings.open-game-dir")}
             </Button>
-            <h4>{t("settings.java-path")}: {javaPath || t("settings.java-path-not-set")}</h4>
+            <h4>{t("settings.java-path")}</h4>
+            <input
+              type="text"
+              className="java-path-input"
+              value={javaPath}
+              onChange={(e) => this.setState({ javaPath: e.target.value })}
+              onBlur={() => {
+                const valid = window.ipc.sendSync("set-java-path", this.state.javaPath);
+                if (!valid) {
+                  Swal.fire({
+                    title: t("error"),
+                    text: t("settings.java-missing"),
+                    icon: "error",
+                    confirmButtonColor: "#54c2f0",
+                    background: "#333",
+                  });
+                }
+              }}
+            />
             <Button onClick={this.handleSelectJava}>{t("settings.select-java")}</Button>
           </section>
           <section className="launcher">
