@@ -10,7 +10,7 @@ import type { Profile } from "./authmanager";
 // Launcher global constants
 export const LAUNCHER_CONFIG =
   "https://dd06-dev.fr/dl/launchers/react-mc-launcher/launcher_config.json";
-export const LAUNCHER_NAME = "ReactMCLauncher";
+export const LAUNCHER_NAME = "TECNILAND Nexus";
 export const MC_VERSION = "1.12.2";
 export const FORGE_VERSION = "14.23.5.2855";
 export const JRE_WINDOWS = "https://dd06-dev.fr/dl/jre/jre-windows.zip";

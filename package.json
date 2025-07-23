@@ -39,9 +39,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "postinstall": "electron-builder install-app-deps",
-    "electron:start": "wait-on http://localhost:3000 && electron .",
+    "electron:start": "electron .",
     "electron:watch": "nodemon --watch \"electron/**/*\" -e ts --exec \"tsc -p electron && electron .\" ",
-    "electron:dev": "concurrently \"cross-env BROWSER=none npm run react:start\" \"wait-on http://localhost:3000 && tsc -p electron && electron .\"",
+    "electron:dev": "npm run build && tsc -p electron && electron .",
     "electron:build": "yarn build && tsc -p electron && electron-builder",
     "eject": "react-scripts eject"
     
