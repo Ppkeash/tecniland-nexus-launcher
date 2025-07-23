@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import "i18n";
-import "css/Settings.css";
+// Import styles for the settings screen
+import "styles/Settings.css";
 import {
   Slider,
   Button,

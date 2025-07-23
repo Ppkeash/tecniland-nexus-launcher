@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { WithTranslation, withTranslation } from "react-i18next";
 import "i18n";
-import "css/Updater.css";
+// Reuse updater styles
+import "styles/Updater.css";
 import { LinearProgress } from "@mui/material";
 import Swal from "sweetalert2";
 

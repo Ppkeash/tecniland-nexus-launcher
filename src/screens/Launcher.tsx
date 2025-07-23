@@ -3,7 +3,8 @@ import { withTranslation, WithTranslation } from "react-i18next";
 import { Tooltip } from "@mui/material";
 import "i18n";
 import Swal from "sweetalert2";
-import "css/Launcher.css";
+// Launcher main style sheet
+import "styles/Launcher.css";
 import { withRouter } from "utils/withRouter";
 import { NavigateFunction } from "react-router-dom";
 
