@@ -2,7 +2,7 @@ import reportWebVitals from "reportWebVitals";
 
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Frame from "components/Frame";
 import Auth from "screens/Auth";
 import Launcher from "screens/Launcher";
@@ -37,7 +37,7 @@ ReactDOM.render(
       }}
     >
       <Frame />
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           {/* Flujo de inicio offline */}
           <Route path="/" element={<Init />} />
@@ -52,7 +52,7 @@ ReactDOM.render(
           <Route path="/settings" element={<Settings />} />
           <Route path="/tecniland" element={<TecnilandScreen />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   </React.StrictMode>,
   document.getElementById("root")
