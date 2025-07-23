@@ -1,6 +1,6 @@
 import { win } from "./main";
 
-import { Client } from "minecraft-launcher-core";
+import { Client, Authenticator } from "minecraft-launcher-core";
 import { ipcMain as ipc } from "electron";
 import * as path from "path";
 import fs from "fs";
@@ -30,6 +30,9 @@ let jre = "default";
  */
 export function initGame() {
   ipc.on("play", () => play());
+  ipc.on("play-version", (event, args: { username: string; version: string }) => {
+    playVanilla(args.username, args.version);
+  });
 }
 
 function setUpdateText(message: string) {
@@ -37,6 +40,28 @@ function setUpdateText(message: string) {
 }
 function setUpdateProgress(progress: number) {
   win?.webContents.send("set-update-progress", progress);
+}
+
+async function playVanilla(username: string, version: string) {
+  const launcher = new Client();
+  const auth = await Authenticator.getAuth(username);
+  const opts = {
+    authorization: auth,
+    root: configManager.getGameDirectory(),
+    version: { number: version, type: "release" },
+    memory: {
+      max: configManager.getMaxRAM()
+        ? (configManager.getMaxRAM() as string)
+        : "2G",
+      min: configManager.getMinRAM()
+        ? (configManager.getMinRAM() as string)
+        : "1G",
+    },
+  } as any;
+
+  launcher.launch(opts);
+  launcher.on("debug", (e) => console.log(e));
+  launcher.on("data", (e) => console.log(e));
 }
 
 function play() {
