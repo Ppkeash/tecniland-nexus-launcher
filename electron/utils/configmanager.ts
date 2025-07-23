@@ -409,6 +409,57 @@ export function setJavaExecutable(javaPath: string) {
   }
 }
 
+export function autoDetectJavaPath(): string | null {
+  const candidates: string[] = [];
+
+  if (process.env.JAVA_HOME) {
+    candidates.push(
+      path.join(process.env.JAVA_HOME, 'bin', process.platform === 'win32' ? 'java.exe' : 'java')
+    );
+  }
+
+  if (process.platform === 'win32') {
+    const programFiles = process.env['ProgramFiles'] || 'C:\\Program Files';
+    const programFiles86 = process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
+
+    for (const base of [programFiles, programFiles86]) {
+      const javaDir = path.join(base, 'Java');
+      if (fs.existsSync(javaDir)) {
+        const subdirs = fs.readdirSync(javaDir);
+        for (const sub of subdirs) {
+          const execPath = path.join(javaDir, sub, 'bin', 'java.exe');
+          candidates.push(execPath);
+        }
+      }
+    }
+  } else {
+    candidates.push('/usr/bin/java', '/usr/local/bin/java', '/bin/java');
+  }
+
+  for (const c of candidates) {
+    if (fs.existsSync(c)) {
+      return c;
+    }
+  }
+  return null;
+}
+
+export function resolveJavaPath(): string | null {
+  const configured = getJavaExecutable();
+  if (configured && fs.existsSync(configured)) {
+    return configured;
+  }
+
+  const detected = autoDetectJavaPath();
+  if (detected && config) {
+    config.settings.java.path = detected;
+    saveConfig();
+    return detected;
+  }
+
+  return null;
+}
+
 /**
  * Check if auto authentication is enabled or not
  *
