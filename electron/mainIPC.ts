@@ -1,8 +1,9 @@
-import { ipcMain as ipc, shell } from "electron";
+import { ipcMain as ipc, shell, dialog } from "electron";
 import { win } from "./main";
 
 import Logger from "./utils/logger";
 import os from "os";
+import { isJavaAvailable } from "./game";
 
 import type { DynaConfig } from "./utils/configmanager";
 import { ping } from "minecraft-server-ping";
@@ -65,6 +66,32 @@ function initMainIPC() {
   ipc.on("open-game-dir", () =>
     shell.openPath(configManager.getGameDirectory())
   );
+  ipc.on("open-java-dialog", async (event) => {
+    const result = await dialog.showOpenDialog(win!, {
+      properties: ["openFile"],
+      filters: [
+        {
+          name: "Java",
+          extensions: [process.platform === "win32" ? "exe" : ""],
+        },
+      ],
+    });
+    if (!result.canceled && result.filePaths.length > 0) {
+      configManager.setJavaExecutable(result.filePaths[0]);
+      configManager.saveConfig();
+      event.sender.send("java-path-selected", result.filePaths[0]);
+    }
+  });
+  ipc.on("set-java-path", (event, args) => {
+    configManager.setJavaExecutable(args);
+    configManager.saveConfig();
+  });
+  ipc.on("get-java-path", (event) => {
+    event.returnValue = configManager.getJavaExecutable();
+  });
+  ipc.on("is-java-valid", (event) => {
+    event.returnValue = isJavaAvailable();
+  });
 
   //Sync utils
   ipc.on("get-launcher-name", (event) => {

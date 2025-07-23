@@ -1,10 +1,12 @@
 .launcher-content {
+    height: 100vh;
+    background-image: url('../../public/assets/background.png');
+    background-size: cover;
+    background-position: center;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
     flex-direction: column;
+    align-items: center;
     font-family: "Open Sans", sans-serif;
-    height: 95%;
 }
 .launcher-content img {
     user-select: none;
@@ -12,9 +14,8 @@
     -webkit-user-drag: none;
 }
 .launcher-content > img {
-    margin-top: 50px;
-    width: 100px;
-
+    margin-top: 40px;
+    width: 120px;
 }
 .launcher-content .player-box {
     display: flex;
@@ -44,6 +45,8 @@
 }
 .launcher-content .player-box > p {
     color: white;
+    margin-top: 5px;
+    font-weight: 600;
 }
 .launcher-content .play-content {
     display: flex;
@@ -54,13 +57,23 @@
 .launcher-content .play-box {
     display: flex;
     justify-content: center;
-    
+
     align-items: center;
     background: rgba(0,0,0,0.4);
     height: 100px;
     width: 500px;
     border-radius: 30px;
 
+}
+.launcher-content .play-box .version-selector {
+    margin-right: 20px;
+}
+.launcher-content .play-box select {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 .launcher-content .play-box .play-button, .launcher-content .play-box .settings-button {
     color: white;
@@ -73,8 +86,8 @@
     font-size: 30px;
 }
 .launcher-content .play-box .play-button{
-    margin-left: 120px;
     padding: 10px 20px;
+    margin-left: 20px;
 }
 .launcher-content .play-box .play-button:hover,.launcher-content .play-box .settings-button:hover {
     background: rgba(0,0,0,0.4);
@@ -143,9 +156,10 @@
     right: 5px;
     bottom: 5px;
     width: 400px;
-    height: 150px;
-    background: rgba(0,0,0,0.2);
-    border-radius: 5px;
+    height: 160px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 10px;
+    padding: 10px;
 }
 .launcher-content .news-box > h3, .launcher-content .news-box > p{
     color: white;

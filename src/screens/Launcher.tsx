@@ -8,11 +8,14 @@ import "styles/Launcher.css";
 import { withRouter } from "utils/withRouter";
 import { NavigateFunction } from "react-router-dom";
 
+const versions = ["1.20.1", "1.19.4", "1.18.2", "1.16.5"];
+
 type State = {
   playerName: string;
   playerUuid: string;
   playersCount: string;
   serverStatus: string;
+  version: string;
 };
 
 type Props = {
@@ -25,6 +28,7 @@ class Launcher extends Component<Props & WithTranslation, State> {
     playerUuid: "",
     playersCount: "",
     serverStatus: "offline",
+    version: "1.20.1",
   };
 
   componentDidMount() {
@@ -73,12 +77,9 @@ class Launcher extends Component<Props & WithTranslation, State> {
   //Arrow fx for binding
   handlePlay = () => {
     const { t } = this.props;
+    const { playerName, version } = this.state;
     const config = window.ipc.sendSync("get-dynamic-config");
-    if (!config.maintenance) {
-      window.ipc.send("play");
-      // @ts-ignore: Cannot invoke an object which is possibly 'undefined'
-      this.props.navigate("/updater");
-    } else {
+    if (config.maintenance) {
       Swal.fire({
         title: t("launcher.maintenance"),
         html: `<p style="color: white;">${config.maintenanceMessage}</p>`,
@@ -86,7 +87,24 @@ class Launcher extends Component<Props & WithTranslation, State> {
         confirmButtonColor: "#54c2f0",
         background: "#333",
       });
+      return;
     }
+
+    const javaValid = window.ipc.sendSync("is-java-valid");
+    if (!javaValid) {
+      Swal.fire({
+        title: t("error"),
+        text: t("settings.java-missing"),
+        icon: "error",
+        confirmButtonColor: "#54c2f0",
+        background: "#333",
+      }).then(() => {
+        window.ipc.send("open-java-dialog");
+      });
+      return;
+    }
+
+    window.ipc.send("play-version", { username: playerName, version });
   };
   getNews() {
     const config = window.ipc.sendSync("get-dynamic-config");
@@ -126,6 +144,18 @@ class Launcher extends Component<Props & WithTranslation, State> {
             </p>
           </div>
           <div className="play-box">
+            <div className="version-selector">
+              <select
+                value={this.state.version}
+                onChange={(e) => this.setState({ version: e.target.value })}
+              >
+                {versions.map((v) => (
+                  <option key={v} value={v}>
+                    {v}
+                  </option>
+                ))}
+              </select>
+            </div>
             <button className="play-button" onClick={this.handlePlay}>
               {t("launcher.play")}
             </button>

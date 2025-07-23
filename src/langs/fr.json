@@ -75,6 +75,10 @@
     "auto-auth": "Connexion automatique",
     "keep-launcher-open": "Garder le launcher ouvert",
     "account": "Compte",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "java-path": "Chemin Java",
+    "select-java": "Sélectionner Java",
+    "java-path-not-set": "Non défini",
+    "java-missing": "Java introuvable. Veuillez sélectionner le chemin"
   }
 }
