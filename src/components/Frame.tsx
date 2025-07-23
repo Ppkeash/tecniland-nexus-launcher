@@ -1,5 +1,6 @@
 import { Component } from "react";
-import "css/Frame.css";
+// Frame related styles
+import "styles/Frame.css";
 
 class Frame extends Component {
   handleClose = () => {

@@ -15,6 +15,22 @@ const logger = new Logger("[Launcher]");
 function initMainIPC() {
   //Async utils
   ipc.on("open-link", (event, args) => shell.openExternal(args));
+  // Launch game through a custom batch file
+  ipc.on("launch-local-game", () => {
+    try {
+      const { spawn } = require("child_process");
+      const bat = spawn(
+        "C:\\Users\\Keash\\Documents\\TECNILAND\\launch.bat",
+        [],
+        { shell: true }
+      );
+      bat.stdout.on("data", (data: Buffer) => console.log(data.toString()));
+      bat.stderr.on("data", (data: Buffer) => console.error(data.toString()));
+      bat.on("error", (err: Error) => console.error("Error launching:", err));
+    } catch (err) {
+      console.error("Failed to launch game", err);
+    }
+  });
   ipc.on("ping-server", () => {
     if (configManager?.getDynamicConfig()) {
       ping(

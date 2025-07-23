@@ -1,7 +1,8 @@
 import { Component } from "react";
 import { withTranslation, WithTranslation } from "react-i18next";
 import "i18n";
-import "css/Updater.css";
+// Import styles specific to the launcher updater screen
+import "styles/Updater.css";
 import { LinearProgress } from "@mui/material";
 import Swal from "sweetalert2";
 import { withRouter } from "utils/withRouter";

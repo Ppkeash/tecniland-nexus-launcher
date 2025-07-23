@@ -10,8 +10,11 @@ import Updater from "screens/Updater";
 import Settings from "screens/Settings";
 import TecnilandScreen from "screens/TecnilandScreen";
 import LauncherUpdater from "screens/LauncherUpdater";
-import "index.css";
-import "fontawesome.css";
+import MainScreen from "screens/MainScreen";
+// Global application styles
+import "styles/index.css";
+// Font Awesome icons
+import "styles/fontawesome.css";
 declare global {
   interface Window {
     ipc: {
@@ -33,7 +36,9 @@ ReactDOM.render(
       <Frame />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LauncherUpdater />} />
+          {/* Landing page of the launcher */}
+          <Route path="/" element={<MainScreen />} />
+          <Route path="/update" element={<LauncherUpdater />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/launcher" element={<Launcher />} />
           <Route path="/updater" element={<Updater />} />

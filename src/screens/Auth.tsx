@@ -7,7 +7,8 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
-import "css/Auth.css";
+// Screen styles for authentication
+import "styles/Auth.css";
 import { withRouter } from "utils/withRouter";
 import { NavigateFunction } from "react-router-dom";
 import Swal from "sweetalert2";
