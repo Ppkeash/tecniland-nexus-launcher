@@ -35,30 +35,24 @@ This section details the setup of a basic developmentment environment.
 > yarn install
 ```
 
----
+**Start in Development**
 
-**Launch React App**
-
-```console
-> yarn start
-```
-
----
-
-**Launch Electron App**
+The launcher integrates React with Electron. Use the following command to run the application in development mode and automatically open the desktop window:
 
 ```console
-> yarn run electron:watch
+> npm start
 ```
+
+If you only want to run the React development server, execute `npm run react:start`.
 
 ---
 
 **Build Installers**
 
-To build for your current platform.
+To create a production build for your platform run:
 
 ```console
-> yarn run build
+> npm run electron:build
 ```
 
 ---
