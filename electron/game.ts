@@ -30,7 +30,8 @@ export function isJavaAvailable(): boolean {
   try {
     const res = ChildProcess.spawnSync(javaExec, ["-version"]);
     if (res.error) return false;
-    return res.stderr.toString().includes("version");
+    const output = res.stderr.toString();
+    return /version/.test(output) && /64/.test(output);
   } catch (e) {
     return false;
   }
@@ -214,40 +215,28 @@ function checkJavaInstallation() {
       javaLogger.log("No java installation found!");
       return reject();
     }
-    const spawn = ChildProcess.spawn(execCmd, ["-version"]);
-    spawn.on("error", function () {
+
+    const res = ChildProcess.spawnSync(execCmd, ["-version"]);
+    if (res.error) {
       javaLogger.log("No java installation found!");
       return reject();
-    });
-    spawn.stderr.on("data", function (data: string) {
-      if (data.includes("64") && data.includes("1.8")) {
-        data = data.split("\n")[0];
-        const javaVersion = new RegExp("java version").test(data)
-          ? data.split(" ")[2].replace(/"/g, "")
-          : false;
-        if (javaVersion != false) {
-          javaLogger.log("Java " + javaVersion + " is already installed");
-          jre = "default";
-          return resolve();
-        } else {
-          if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
-            jre = jrePath;
-            return resolve();
-          } else {
-            javaLogger.log("No java installation found!");
-            return reject();
-          }
-        }
-      } else {
-        if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
-          jre = jrePath;
-          return resolve();
-        } else {
-          javaLogger.log("No java installation found!");
-          return reject();
-        }
-      }
-    });
+    }
+    const output = res.stderr.toString();
+    const versionMatch = output.match(/version \"([^\"]+)\"/);
+    const is64 = output.includes("64");
+    if (versionMatch && is64) {
+      javaLogger.log(`Java ${versionMatch[1]} is already installed`);
+      jre = "default";
+      return resolve();
+    }
+
+    if (fs.existsSync(jrePath) && fs.readdirSync(jrePath).length !== 0) {
+      jre = jrePath;
+      return resolve();
+    }
+
+    javaLogger.log("No java installation found!");
+    return reject();
   });
 }
 
