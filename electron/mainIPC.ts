@@ -19,10 +19,12 @@ function initMainIPC() {
   // Ejecuta un script local para lanzar el juego. La ruta se obtiene de la
   // variable de entorno LOCAL_GAME_SCRIPT para permitir configuraciones
   // personalizadas en cada máquina.
-  ipc.on("launch-local-game", () => {
+  ipc.on("launch-local-game", (event) => {
     const scriptPath = process.env.LOCAL_GAME_SCRIPT;
     if (!scriptPath) {
-      logger.error("LOCAL_GAME_SCRIPT no está definida");
+      const msg = "LOCAL_GAME_SCRIPT no está definida";
+      logger.error(msg);
+      event.sender.send("launch-local-error", msg);
       return;
     }
     try {
@@ -30,9 +32,16 @@ function initMainIPC() {
       const bat = spawn(scriptPath, [], { shell: true });
       bat.stdout.on("data", (data: Buffer) => console.log(data.toString()));
       bat.stderr.on("data", (data: Buffer) => console.error(data.toString()));
-      bat.on("error", (err: Error) => console.error("Error launching:", err));
-    } catch (err) {
-      console.error("Failed to launch game", err);
+      bat.on("error", (err: Error) => {
+        logger.error("Error launching: " + err.message);
+        event.sender.send("launch-local-error", err.message);
+      });
+    } catch (err: any) {
+      logger.error("Failed to launch game: " + err?.message);
+      event.sender.send(
+        "launch-local-error",
+        err?.message || "Unknown error"
+      );
     }
   });
   ipc.on("ping-server", () => {
