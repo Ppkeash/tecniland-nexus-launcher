@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 // Pantalla principal de inicio del launcher
 import 'styles/MainScreen.css';
 import { launchLocalGame } from 'utils/launcher';
@@ -14,6 +14,17 @@ const MainScreen: React.FC = () => {
     // Delegamos la acción al helper encargado de comunicarse con Electron
     launchLocalGame();
   };
+
+  useEffect(() => {
+    const listener = (msg: string) => {
+      alert(msg);
+    };
+    // Escuchamos errores al intentar lanzar el juego
+    window.ipc.receive('launch-local-error', listener);
+    return () => {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+    };
+  }, []);
 
   return (
     <div className="main-container">
